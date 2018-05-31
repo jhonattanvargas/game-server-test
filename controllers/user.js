@@ -9,6 +9,7 @@ function signUp (req, res){
     const user = new User({
         mail: req.body.mail,
         displayName: req.body.displayName,
+        level: 1,
         resources: [
             {
                 name:'food',
@@ -19,13 +20,9 @@ function signUp (req, res){
                 name:'wood',
                 current: 0,
                 max: 0
-            },
-            {
-                name:'stone',
-                current: 0,
-                max: 0
             }
-        ]
+        ],
+        rol: 'user'
     })
 
     bcrypt.genSalt(10, (err, salt)=>{
@@ -59,6 +56,7 @@ function signIn (req, res){
                 res.status(200).send({
                     message: `logIn successful`,
                     resources: user.resources,
+                    level: user.level,
                     token: services.createToken(user)
                 })
             }else{
@@ -68,7 +66,7 @@ function signIn (req, res){
     })
 }
 
-function getResources(req, res){
+function getResources(req, res){    
     //console.log('user',req.user)        
     User.findOne({_id:req.user}, (err,user)=>{
         if(err) return res.status(500).send({message:`an Error has ocurred: ${err}`})
@@ -80,8 +78,27 @@ function getResources(req, res){
     })
 }
 
+function getUserData(req, res){
+    //console.log('user',req.user)        
+    User.findOne({_id:req.user}, (err,user)=>{
+        if(err) return res.status(500).send({message:`an Error has ocurred: ${err}`})
+        if(!user) return res.status(404).send({message:`user dont exist`})
+
+        res.status(200).send({
+            user:{
+                resources: user.resources,
+                displayName: user.displayName,
+                level: user.level,
+                currentWorld: user.currentWorld,
+                rol: user.rol
+            }
+        })
+    })
+}
+
 module.exports = {
     signIn,
     signUp,
-    getResources
+    getResources,
+    getUserData
 }

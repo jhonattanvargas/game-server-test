@@ -8,8 +8,11 @@ const UserSchema = Schema({
     displayName: String,
     mail: {type: String, unique: true, lowercase: true},
     resources: Array,
+    level: Number,
     password: {type: String},
-    token: String
+    token: String,
+    currentWorld: Number,
+    rol: String
 })
 
 /*
