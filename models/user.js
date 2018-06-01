@@ -11,7 +11,7 @@ const UserSchema = Schema({
     level: Number,
     password: {type: String},
     token: String,
-    currentWorld: Number,
+    currentWorld: String,
     rol: String
 })
 

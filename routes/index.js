@@ -15,7 +15,7 @@ const WorldUserCtrl = require(global.PATH_CONTROLLERS+'worldUser')
 api.post('/signup', UserCtrl.signUp)
 api.post('/signin', UserCtrl.signIn)
 api.get('/resources', auth, UserCtrl.getResources)
-api.get('/user/data/:id', auth, UserCtrl.getUserData)
+api.get('/user/data/me', auth, UserCtrl.getUserData)
 
 //world
 api.post('/world', auth, WorldCtrl.saveWorld)

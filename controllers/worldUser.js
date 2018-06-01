@@ -29,10 +29,13 @@ function addUser (req, res){
             if(world.users.find( u => u._id == user._id) != null)
                 res.status(500).send({message:`an Error has ocurred: the user exist in the world`})
             else{
+                user.currentWorld = world._id;
                 world.users.push(user)
                 world.save(err => {
                     if(err) res.status(500).send({message:`Error on create world: ${err}`})
-                    
+                    user.save(err => {
+                        if(err) res.status(500).send({message:`Error on saving user current world: ${err}`})
+                    })
                     return res.status(200).send({world})
                 })
             }                
